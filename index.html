@@ -10,8 +10,8 @@ body {
     margin: 0;
     min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     background: #111;
     color: white;
     font-family: Arial, sans-serif;
@@ -37,7 +37,6 @@ input {
 
 button {
     padding: 12px 25px;
-    margin-top: 10px;
     border: 0;
     border-radius: 8px;
     cursor: pointer;
@@ -63,35 +62,34 @@ button {
 </div>
 
 <script>
-async function login() {
+function login() {
+
     const username =
         document.getElementById("username").value;
 
     const password =
         document.getElementById("password").value;
 
-    const response = await fetch("/api/checkin", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            username: username,
-            password: password
-        })
-    });
+    if (username === "Admin" &&
+        password === "Deadman switch") {
 
-    const data = await response.json();
+        // Timer BARU DIMULAI saat login berhasil
+        localStorage.setItem(
+            "lastCheckin",
+            Date.now()
+        );
 
-    if (data.success) {
-        /*
-         * Check-in berhasil.
-         * Server sekarang menghitung 24 jam.
-         */
+        localStorage.setItem(
+            "loggedIn",
+            "true"
+        );
+
         window.location.href = "tujuan.html";
+
     } else {
+
         document.getElementById("error").textContent =
-            data.message;
+            "Username atau password salah.";
     }
 }
 </script>
