@@ -27,7 +27,7 @@ body {
 }
 
 #timer {
-    font-size: 55px;
+    font-size: 48px;
     font-weight: bold;
     margin: 25px 0;
 }
@@ -37,11 +37,15 @@ button {
     border: 0;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
 }
 
 #status {
     margin-top: 20px;
+}
+
+.sos {
+    color: #ff4444;
+    font-weight: bold;
 }
 </style>
 </head>
@@ -50,17 +54,17 @@ button {
 
 <div class="box">
 
-<h1>🟢 Deadman Switch</h1>
+    <h1>🟢 Deadman Switch</h1>
 
-<p>Check-in berikutnya dalam:</p>
+    <p>Check-in berikutnya sebelum:</p>
 
-<div id="timer">24:00:00</div>
+    <div id="timer">24:00:00</div>
 
-<button onclick="checkin()">
-    🔄 CHECK-IN
-</button>
+    <button id="checkinButton" onclick="checkin()">
+        🔄 CHECK-IN
+    </button>
 
-<p id="status"></p>
+    <p id="status"></p>
 
 </div>
 
@@ -71,13 +75,14 @@ const TIMEOUT = 24 * 60 * 60 * 1000;
 
 function checkin() {
 
+    // Reset timer menjadi 24 jam
     localStorage.setItem(
         "lastCheckin",
         Date.now()
     );
 
     document.getElementById("status").textContent =
-        "✅ Check-in berhasil. Timer kembali 24 jam.";
+        "✅ Check-in berhasil. Timer dimulai kembali 24 jam.";
 
     updateTimer();
 }
@@ -92,10 +97,13 @@ function updateTimer() {
         return;
     }
 
-    const remaining =
-        TIMEOUT -
-        (Date.now() - Number(lastCheckin));
+    const elapsed =
+        Date.now() - Number(lastCheckin);
 
+    const remaining =
+        TIMEOUT - elapsed;
+
+    // 24 JAM SUDAH HABIS
     if (remaining <= 0) {
 
         document.getElementById("timer")
@@ -104,6 +112,12 @@ function updateTimer() {
         document.getElementById("status")
             .textContent =
             "⚠️ Deadman switch on-sos";
+
+        document.getElementById("status")
+            .className = "sos";
+
+        document.getElementById("checkinButton")
+            .disabled = true;
 
         return;
     }
@@ -127,6 +141,7 @@ function updateTimer() {
         String(seconds).padStart(2, "0");
 }
 
+// Update setiap detik
 setInterval(updateTimer, 1000);
 
 updateTimer();
