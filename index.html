@@ -10,8 +10,8 @@ body {
     margin: 0;
     min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     background: #111;
     color: white;
     font-family: Arial, sans-serif;
@@ -19,29 +19,32 @@ body {
 
 .box {
     width: 90%;
-    max-width: 450px;
+    max-width: 400px;
     padding: 30px;
     background: #222;
     border-radius: 15px;
     text-align: center;
 }
 
-#timer {
-    font-size: 55px;
-    font-weight: bold;
-    margin: 25px 0;
+input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin: 8px 0;
+    border: 0;
+    border-radius: 8px;
 }
 
 button {
-    padding: 13px 25px;
+    padding: 12px 25px;
+    margin-top: 10px;
     border: 0;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
 }
 
-#status {
-    margin-top: 20px;
+#error {
+    color: #ff5555;
 }
 </style>
 </head>
@@ -49,88 +52,48 @@ button {
 <body>
 
 <div class="box">
+    <h1>🔐 Deadman Switch</h1>
 
-<h1>🟢 Deadman Switch</h1>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
 
-<p>Check-in berikutnya dalam:</p>
+    <button onclick="login()">LOGIN</button>
 
-<div id="timer">24:00:00</div>
-
-<button onclick="checkin()">
-    🔄 CHECK-IN
-</button>
-
-<p id="status"></p>
-
+    <p id="error"></p>
 </div>
 
 <script>
+async function login() {
+    const username =
+        document.getElementById("username").value;
 
-// 24 JAM
-const TIMEOUT = 24 * 60 * 60 * 1000;
+    const password =
+        document.getElementById("password").value;
 
-function checkin() {
+    const response = await fetch("/api/checkin", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password
+        })
+    });
 
-    localStorage.setItem(
-        "lastCheckin",
-        Date.now()
-    );
+    const data = await response.json();
 
-    document.getElementById("status").textContent =
-        "✅ Check-in berhasil. Timer kembali 24 jam.";
-
-    updateTimer();
-}
-
-function updateTimer() {
-
-    const lastCheckin =
-        localStorage.getItem("lastCheckin");
-
-    if (!lastCheckin) {
-        window.location.href = "index.html";
-        return;
+    if (data.success) {
+        /*
+         * Check-in berhasil.
+         * Server sekarang menghitung 24 jam.
+         */
+        window.location.href = "tujuan.html";
+    } else {
+        document.getElementById("error").textContent =
+            data.message;
     }
-
-    const remaining =
-        TIMEOUT -
-        (Date.now() - Number(lastCheckin));
-
-    if (remaining <= 0) {
-
-        document.getElementById("timer")
-            .textContent = "00:00:00";
-
-        document.getElementById("status")
-            .textContent =
-            "⚠️ Deadman switch on-sos";
-
-        return;
-    }
-
-    const totalSeconds =
-        Math.floor(remaining / 1000);
-
-    const hours =
-        Math.floor(totalSeconds / 3600);
-
-    const minutes =
-        Math.floor((totalSeconds % 3600) / 60);
-
-    const seconds =
-        totalSeconds % 60;
-
-    document.getElementById("timer")
-        .textContent =
-        String(hours).padStart(2, "0") + ":" +
-        String(minutes).padStart(2, "0") + ":" +
-        String(seconds).padStart(2, "0");
 }
-
-setInterval(updateTimer, 1000);
-
-updateTimer();
-
 </script>
 
 </body>
