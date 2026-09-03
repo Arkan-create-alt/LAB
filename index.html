@@ -3,81 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dead Man Switch - Login</title>
+<title>Deadman Switch</title>
 
 <style>
-    body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: Arial, sans-serif;
-        background: #111;
-        color: white;
-    }
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+}
 
-    .box {
-        width: 90%;
-        max-width: 400px;
-        padding: 30px;
-        background: #222;
-        border-radius: 15px;
-        text-align: center;
-    }
+.box {
+    width: 90%;
+    max-width: 450px;
+    padding: 30px;
+    background: #222;
+    border-radius: 15px;
+    text-align: center;
+}
 
-    input {
-        box-sizing: border-box;
-        width: 100%;
-        padding: 12px;
-        margin: 8px 0;
-        border: 0;
-        border-radius: 8px;
-    }
+#timer {
+    font-size: 55px;
+    font-weight: bold;
+    margin: 25px 0;
+}
 
-    button {
-        margin-top: 10px;
-        padding: 12px 25px;
-        border: 0;
-        border-radius: 8px;
-        cursor: pointer;
-    }
+button {
+    padding: 13px 25px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
 
-    #error {
-        color: #ff5555;
-    }
+#status {
+    margin-top: 20px;
+}
 </style>
 </head>
 
 <body>
 
 <div class="box">
-    <h1>🔐 Dead Man Switch</h1>
 
-    <input id="username" type="text" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
+<h1>🟢 Deadman Switch</h1>
 
-    <button onclick="login()">LOGIN</button>
+<p>Check-in berikutnya dalam:</p>
 
-    <p id="error"></p>
+<div id="timer">24:00:00</div>
+
+<button onclick="checkin()">
+    🔄 CHECK-IN
+</button>
+
+<p id="status"></p>
+
 </div>
 
 <script>
-function login() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
 
-    if (username === "Admin" && password === "Deadman switch") {
+// 24 JAM
+const TIMEOUT = 24 * 60 * 60 * 1000;
 
-        localStorage.setItem("lastCheckin", Date.now());
+function checkin() {
 
-        window.location.href = "tujuan.html";
+    localStorage.setItem(
+        "lastCheckin",
+        Date.now()
+    );
 
-    } else {
-        document.getElementById("error").textContent =
-            "Username atau password salah.";
-    }
+    document.getElementById("status").textContent =
+        "✅ Check-in berhasil. Timer kembali 24 jam.";
+
+    updateTimer();
 }
+
+function updateTimer() {
+
+    const lastCheckin =
+        localStorage.getItem("lastCheckin");
+
+    if (!lastCheckin) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const remaining =
+        TIMEOUT -
+        (Date.now() - Number(lastCheckin));
+
+    if (remaining <= 0) {
+
+        document.getElementById("timer")
+            .textContent = "00:00:00";
+
+        document.getElementById("status")
+            .textContent =
+            "⚠️ Deadman switch on-sos";
+
+        return;
+    }
+
+    const totalSeconds =
+        Math.floor(remaining / 1000);
+
+    const hours =
+        Math.floor(totalSeconds / 3600);
+
+    const minutes =
+        Math.floor((totalSeconds % 3600) / 60);
+
+    const seconds =
+        totalSeconds % 60;
+
+    document.getElementById("timer")
+        .textContent =
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
+}
+
+setInterval(updateTimer, 1000);
+
+updateTimer();
+
 </script>
 
 </body>
