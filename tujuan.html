@@ -1,93 +1,84 @@
-from flask import Flask, render_template, request, redirect, session
-from datetime import datetime, timedelta
-import os
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dead Man Switch - Login</title>
 
-app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "ganti-secret-key-ini")
+<style>
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: white;
+    }
 
-USERNAME = "admin"
-PASSWORD = "1234"
+    .box {
+        width: 90%;
+        max-width: 400px;
+        padding: 30px;
+        background: #222;
+        border-radius: 15px;
+        text-align: center;
+    }
 
-# Untuk testing gunakan 60 detik.
-# Kalau mau 24 jam: 24 * 60 * 60
-TIMEOUT_SECONDS = 60
+    input {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border: 0;
+        border-radius: 8px;
+    }
 
-last_checkin = None
-timeout_triggered = False
+    button {
+        margin-top: 10px;
+        padding: 12px 25px;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+    }
 
+    #error {
+        color: #ff5555;
+    }
+</style>
+</head>
 
-def timeout_action():
-    """
-    Aksi yang dijalankan ketika timer habis.
-    Untuk sekarang hanya mencetak pesan.
-    """
-    print("\n⚠️ CHECK-IN TIMEOUT")
-    print("User tidak melakukan check-in tepat waktu.\n")
+<body>
 
+<div class="box">
+    <h1>🔐 Dead Man Switch</h1>
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    global last_checkin, timeout_triggered
+    <input id="username" type="text" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
 
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+    <button onclick="login()">LOGIN</button>
 
-        if username == USERNAME and password == PASSWORD:
-            session["logged_in"] = True
+    <p id="error"></p>
+</div>
 
-            # Reset timer
-            last_checkin = datetime.now()
-            timeout_triggered = False
+<script>
+function login() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-            return redirect("/")
+    if (username === "Admin" && password === "Deadman switch") {
 
-        return render_template(
-            "index.html",
-            error="Username atau password salah."
-        )
+        localStorage.setItem("lastCheckin", Date.now());
 
-    # Belum login
-    if not session.get("logged_in"):
-        return render_template("index.html", logged_in=False)
+        window.location.href = "tujuan.html";
 
-    # Cek timer
-    remaining = 0
+    } else {
+        document.getElementById("error").textContent =
+            "Username atau password salah.";
+    }
+}
+</script>
 
-    if last_checkin:
-        elapsed = (datetime.now() - last_checkin).total_seconds()
-        remaining = max(0, TIMEOUT_SECONDS - int(elapsed))
-
-        if remaining == 0 and not timeout_triggered:
-            timeout_triggered = True
-            timeout_action()
-
-    return render_template(
-        "index.html",
-        logged_in=True,
-        remaining=remaining,
-        timeout=timeout_triggered
-    )
-
-
-@app.route("/checkin", methods=["POST"])
-def checkin():
-    global last_checkin, timeout_triggered
-
-    if not session.get("logged_in"):
-        return redirect("/")
-
-    last_checkin = datetime.now()
-    timeout_triggered = False
-
-    return redirect("/")
-
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect("/")
-
-
-if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8080, debug=False)
+</body>
+</html>
