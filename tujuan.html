@@ -3,150 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deadman Switch</title>
+
+<title>LAB — Tujuan</title>
 
 <style>
-body {
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     min-height: 100vh;
+    background: #050505;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
     display: flex;
-    justify-content: center;
     align-items: center;
-    background: #111;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* GRID BACKGROUND */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(#ffffff08 1px, transparent 1px),
+        linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+}
+
+/* CONTAINER */
+
+.container {
+    width: min(850px, 88%);
+    position: relative;
+    z-index: 2;
+}
+
+/* TOP */
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    color: #555;
+    font-size: 10px;
+    letter-spacing: 4px;
+    margin-bottom: 60px;
+}
+
+/* TITLE */
+
+.small {
+    color: #666;
+    font-size: 11px;
+    letter-spacing: 5px;
+    margin-bottom: 25px;
+}
+
+h1 {
+    font-size: clamp(55px, 12vw, 130px);
+    line-height: .85;
+    letter-spacing: -6px;
+}
+
+h1 span {
+    color: #444;
+}
+
+/* TEXT */
+
+.description {
+    max-width: 600px;
+    margin-top: 40px;
+    color: #777;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+/* BUTTON */
+
+.button {
+    display: inline-block;
+    margin-top: 45px;
+    padding: 17px 28px;
+
+    border: 1px solid #444;
+
     color: white;
-    font-family: Arial, sans-serif;
+    text-decoration: none;
+
+    font-size: 10px;
+    letter-spacing: 3px;
+
+    transition: .3s;
 }
 
-.box {
-    width: 90%;
-    max-width: 450px;
-    padding: 30px;
-    background: #222;
-    border-radius: 15px;
-    text-align: center;
+.button:hover {
+    background: white;
+    color: black;
+    border-color: white;
 }
 
-#timer {
-    font-size: 48px;
-    font-weight: bold;
-    margin: 25px 0;
+/* DECORATION */
+
+.circle {
+    position: fixed;
+    width: 420px;
+    height: 420px;
+    border: 1px solid #181818;
+    border-radius: 50%;
+    right: -130px;
+    bottom: -150px;
 }
 
-button {
-    padding: 13px 25px;
-    border: 0;
-    border-radius: 8px;
-    cursor: pointer;
+.circle::before {
+    content: "";
+    position: absolute;
+    inset: 45px;
+    border: 1px solid #181818;
+    border-radius: 50%;
 }
 
-#status {
-    margin-top: 20px;
+.circle::after {
+    content: "";
+    position: absolute;
+    inset: 100px;
+    border: 1px solid #181818;
+    border-radius: 50%;
 }
 
-.sos {
-    color: #ff4444;
-    font-weight: bold;
+/* FOOTER */
+
+.footer {
+    position: fixed;
+    bottom: 25px;
+    left: 7%;
+
+    color: #333;
+    font-size: 9px;
+    letter-spacing: 3px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+
+    h1 {
+        letter-spacing: -3px;
+    }
+
+    .top {
+        margin-bottom: 45px;
+    }
+
+    .description {
+        font-size: 13px;
+    }
+
+    .circle {
+        width: 300px;
+        height: 300px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="circle"></div>
 
-    <h1>🟢 Deadman Switch</h1>
+<div class="container">
 
-    <p>Check-in berikutnya sebelum:</p>
+    <div class="top">
+        <span>LAB.SYSTEM</span>
+        <span>WELCOME</span>
+    </div>
 
-    <div id="timer">24:00:00</div>
+    <div class="small">
+        THIS IS YOUR LAB
+    </div>
 
-    <button id="checkinButton" onclick="checkin()">
-        🔄 CHECK-IN
-    </button>
+    <h1>
+        WHY<br>
+        <span>LAB?</span>
+    </h1>
 
-    <p id="status"></p>
+    <p class="description">
+        LAB adalah ruang kecil untuk bereksperimen,
+        belajar, dan memahami bagaimana teknologi
+        bekerja di balik layar.
+        <br><br>
+        Jelajahi halaman ini, temukan hal baru,
+        dan gunakan rasa penasaranmu untuk terus belajar.
+    </p>
+
+    <a href="index.html" class="button">
+        MASUK KE MENU UTAMA →
+    </a>
 
 </div>
 
-<script>
-
-// 24 JAM
-const TIMEOUT = 24 * 60 * 60 * 1000;
-
-function checkin() {
-
-    // Reset timer menjadi 24 jam
-    localStorage.setItem(
-        "lastCheckin",
-        Date.now()
-    );
-
-    document.getElementById("status").textContent =
-        "✅ Check-in berhasil. Timer dimulai kembali 24 jam.";
-
-    updateTimer();
-}
-
-function updateTimer() {
-
-    const lastCheckin =
-        localStorage.getItem("lastCheckin");
-
-    if (!lastCheckin) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    const elapsed =
-        Date.now() - Number(lastCheckin);
-
-    const remaining =
-        TIMEOUT - elapsed;
-
-    // 24 JAM SUDAH HABIS
-    if (remaining <= 0) {
-
-        document.getElementById("timer")
-            .textContent = "00:00:00";
-
-        document.getElementById("status")
-            .textContent =
-            "⚠️ Deadman switch on-sos";
-
-        document.getElementById("status")
-            .className = "sos";
-
-        document.getElementById("checkinButton")
-            .disabled = true;
-
-        return;
-    }
-
-    const totalSeconds =
-        Math.floor(remaining / 1000);
-
-    const hours =
-        Math.floor(totalSeconds / 3600);
-
-    const minutes =
-        Math.floor((totalSeconds % 3600) / 60);
-
-    const seconds =
-        totalSeconds % 60;
-
-    document.getElementById("timer")
-        .textContent =
-        String(hours).padStart(2, "0") + ":" +
-        String(minutes).padStart(2, "0") + ":" +
-        String(seconds).padStart(2, "0");
-}
-
-// Update setiap detik
-setInterval(updateTimer, 1000);
-
-updateTimer();
-
-</script>
+<div class="footer">
+    SYSTEM ONLINE // 2026
+</div>
 
 </body>
 </html>
