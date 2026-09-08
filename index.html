@@ -3,95 +3,623 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deadman Switch</title>
+
+<title>LAB — Cyber Challenge</title>
 
 <style>
-body {
+* {
     margin: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #111;
-    color: white;
-    font-family: Arial, sans-serif;
-}
-
-.box {
-    width: 90%;
-    max-width: 400px;
-    padding: 30px;
-    background: #222;
-    border-radius: 15px;
-    text-align: center;
-}
-
-input {
-    width: 100%;
+    padding: 0;
     box-sizing: border-box;
-    padding: 12px;
-    margin: 8px 0;
-    border: 0;
-    border-radius: 8px;
 }
 
-button {
-    padding: 12px 25px;
-    border: 0;
-    border-radius: 8px;
-    cursor: pointer;
+html {
+    scroll-behavior: smooth;
 }
 
-#error {
-    color: #ff5555;
+body {
+    background: #050505;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+}
+
+/* =========================
+   LOADING SCREEN
+========================= */
+
+#loader {
+    position: fixed;
+    inset: 0;
+    background: #050505;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        transform 1s cubic-bezier(.77,0,.18,1),
+        opacity .4s ease;
+}
+
+#loader.hide {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader-content {
+    width: min(850px, 85%);
+    position: relative;
+}
+
+.loader-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #777;
+}
+
+.loader-title {
+    font-size: clamp(18px, 4vw, 35px);
+    letter-spacing: 8px;
+    margin-bottom: 35px;
+    font-weight: 700;
+}
+
+.loader-title span {
+    color: #777;
+}
+
+/* BIG NUMBER */
+
+.counter {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+#percent {
+    font-size: clamp(90px, 20vw, 190px);
+    line-height: .8;
+    font-weight: 800;
+    letter-spacing: -10px;
+}
+
+.percent-symbol {
+    font-size: 25px;
+    color: #777;
+}
+
+/* PROGRESS */
+
+.progress-container {
+    margin-top: 45px;
+    width: 100%;
+    height: 3px;
+    background: #222;
+    overflow: hidden;
+}
+
+#progress {
+    width: 0%;
+    height: 100%;
+    background: white;
+    transition: width .08s linear;
+}
+
+.loader-bottom {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    color: #555;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+/* =========================
+   MAIN WEBSITE
+========================= */
+
+#website {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 1s ease;
+}
+
+#website.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* NAVBAR */
+
+nav {
+    height: 75px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #181818;
+    position: sticky;
+    top: 0;
+    background: rgba(5,5,5,.85);
+    backdrop-filter: blur(15px);
+    z-index: 50;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 5px;
+}
+
+.logo span {
+    color: #666;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #777;
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 2px;
+    transition: .3s;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+/* HERO */
+
+.hero {
+    min-height: calc(100vh - 75px);
+    padding: 100px 7%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border: 1px solid #222;
+    border-radius: 50%;
+    right: -150px;
+    top: 100px;
+    box-shadow:
+        0 0 0 80px #090909,
+        0 0 0 81px #171717,
+        0 0 0 160px #080808,
+        0 0 0 161px #151515;
+}
+
+.hero-small {
+    color: #666;
+    letter-spacing: 5px;
+    font-size: 11px;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-size: clamp(55px, 11vw, 150px);
+    line-height: .85;
+    letter-spacing: -5px;
+    max-width: 900px;
+}
+
+.hero h1 span {
+    color: #444;
+}
+
+.hero p {
+    max-width: 500px;
+    color: #777;
+    line-height: 1.8;
+    margin-top: 35px;
+    font-size: 14px;
+}
+
+.hero-button {
+    margin-top: 40px;
+    width: fit-content;
+    padding: 15px 25px;
+    border: 1px solid #555;
+    color: white;
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 3px;
+    transition: .3s;
+}
+
+.hero-button:hover {
+    background: white;
+    color: black;
+}
+
+/* SECTIONS */
+
+section {
+    padding: 100px 7%;
+    border-top: 1px solid #151515;
+}
+
+.section-label {
+    color: #555;
+    letter-spacing: 4px;
+    font-size: 10px;
+    margin-bottom: 20px;
+}
+
+section h2 {
+    font-size: clamp(35px, 6vw, 70px);
+    margin-bottom: 50px;
+}
+
+/* CHALLENGES */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.card {
+    border: 1px solid #202020;
+    padding: 30px;
+    min-height: 230px;
+    position: relative;
+    transition: .4s;
+    background: #080808;
+}
+
+.card:hover {
+    border-color: #666;
+    transform: translateY(-7px);
+}
+
+.card-number {
+    color: #444;
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+.card h3 {
+    margin-top: 50px;
+    font-size: 23px;
+}
+
+.card p {
+    color: #666;
+    font-size: 12px;
+    margin-top: 15px;
+    line-height: 1.6;
+}
+
+.card-status {
+    position: absolute;
+    bottom: 25px;
+    color: #777;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+/* ABOUT */
+
+.about {
+    max-width: 750px;
+}
+
+.about p {
+    color: #777;
+    line-height: 2;
+    font-size: 15px;
+}
+
+/* FOOTER */
+
+footer {
+    padding: 30px 7%;
+    border-top: 1px solid #151515;
+    display: flex;
+    justify-content: space-between;
+    color: #444;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero {
+        padding-top: 70px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        letter-spacing: -3px;
+    }
+
+    #percent {
+        letter-spacing: -6px;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-    <h1>🔐 Deadman Switch</h1>
+<!-- =========================
+     LOADING SCREEN
+========================= -->
 
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
+<div id="loader">
 
-    <button onclick="login()">LOGIN</button>
+    <div class="loader-content">
 
-    <p id="error"></p>
+        <div class="loader-top">
+            <span>LAB.SYSTEM</span>
+            <span id="status">BOOTING</span>
+        </div>
+
+        <div class="loader-title">
+            INITIALIZING <span>LAB</span>
+        </div>
+
+        <div class="counter">
+            <div id="percent">000</div>
+            <div class="percent-symbol">%</div>
+        </div>
+
+        <div class="progress-container">
+            <div id="progress"></div>
+        </div>
+
+        <div class="loader-bottom">
+            <span>SECURE CONNECTION</span>
+            <span id="loadingText">LOADING...</span>
+        </div>
+
+    </div>
+
 </div>
 
+
+<!-- =========================
+     WEBSITE
+========================= -->
+
+<div id="website">
+
+<nav>
+
+    <div class="logo">
+        LAB<span>.</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="#home">HOME</a>
+        <a href="#challenges">CHALLENGES</a>
+        <a href="#about">ABOUT</a>
+    </div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<div class="hero" id="home">
+
+    <div class="hero-small">
+        CYBER // WEB // PUZZLES
+    </div>
+
+    <h1>
+        ENTER<br>
+        THE <span>LAB.</span>
+    </h1>
+
+    <p>
+        A small experimental cyber laboratory.
+        Explore challenges, investigate clues,
+        inspect the source and discover what
+        isn't visible at first glance.
+    </p>
+
+    <a href="#challenges" class="hero-button">
+        ENTER CHALLENGES →
+    </a>
+
+</div>
+
+
+<!-- CHALLENGES -->
+
+<section id="challenges">
+
+    <div class="section-label">
+        01 / CHALLENGES
+    </div>
+
+    <h2>Choose your<br>challenge.</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="card-number">LEVEL 01</div>
+
+            <h3>Hidden Source</h3>
+
+            <p>
+                Not everything visible on the
+                page is the whole story.
+            </p>
+
+            <div class="card-status">
+                WEB INVESTIGATION
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-number">LEVEL 02</div>
+
+            <h3>Encoded</h3>
+
+            <p>
+                Something strange is hiding
+                inside the data.
+            </p>
+
+            <div class="card-status">
+                ENCODING
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-number">LEVEL 03</div>
+
+            <h3>Unknown</h3>
+
+            <p>
+                Follow the clues and discover
+                what the system doesn't show.
+            </p>
+
+            <div class="card-status">
+                INVESTIGATION
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section id="about">
+
+    <div class="section-label">
+        02 / ABOUT
+    </div>
+
+    <div class="about">
+
+        <h2>Learn.<br>Explore.<br>Break puzzles.</h2>
+
+        <p>
+            LAB dibuat sebagai tempat latihan
+            keamanan siber yang aman dan legal.
+            Semua challenge dirancang untuk
+            dipelajari di lingkungan lab sendiri.
+        </p>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <span>LAB.SYSTEM</span>
+    <span>BUILT FOR LEARNING</span>
+
+</footer>
+
+</div>
+
+
 <script>
-function login() {
 
-    const username =
-        document.getElementById("username").value;
+/* =========================
+   LOADING ANIMATION
+========================= */
 
-    const password =
-        document.getElementById("password").value;
+let number = 0;
 
-    if (username === "Admin" &&
-        password === "Deadman switch") {
+const counter = document.getElementById("percent");
+const progress = document.getElementById("progress");
+const loader = document.getElementById("loader");
+const website = document.getElementById("website");
 
-        // Timer BARU DIMULAI saat login berhasil
-        localStorage.setItem(
-            "lastCheckin",
-            Date.now()
-        );
+const statusText = document.getElementById("status");
+const loadingText = document.getElementById("loadingText");
 
-        localStorage.setItem(
-            "loggedIn",
-            "true"
-        );
+function updateLoader() {
 
-        window.location.href = "tujuan.html";
+    number++;
+
+    counter.textContent =
+        String(number).padStart(3, "0");
+
+    progress.style.width = number + "%";
+
+    if (number < 30) {
+        statusText.textContent = "BOOTING";
+        loadingText.textContent = "STARTING SYSTEM...";
+    }
+    else if (number < 60) {
+        statusText.textContent = "LOADING";
+        loadingText.textContent = "LOADING MODULES...";
+    }
+    else if (number < 90) {
+        statusText.textContent = "VERIFYING";
+        loadingText.textContent = "VERIFYING DATA...";
+    }
+    else {
+        statusText.textContent = "READY";
+        loadingText.textContent = "SYSTEM READY";
+    }
+
+    if (number < 100) {
+
+        setTimeout(updateLoader, 25);
 
     } else {
 
-        document.getElementById("error").textContent =
-            "Username atau password salah.";
+        setTimeout(() => {
+
+            loader.classList.add("hide");
+
+            website.classList.add("show");
+
+            document.body.style.overflow = "auto";
+
+        }, 700);
+
     }
 }
+
+document.body.style.overflow = "hidden";
+
+setTimeout(updateLoader, 500);
+
 </script>
 
 </body>
