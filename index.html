@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
 
-<title>LAB — Cyber Challenge</title>
+<title>LAB — Game</title>
 
 <style>
 * {
@@ -19,23 +20,23 @@ html {
 
 body {
     background: #050505;
-    color: white;
+    color: #fff;
     font-family: Arial, Helvetica, sans-serif;
     overflow-x: hidden;
 }
 
-/* =========================
-   LOADING SCREEN
-========================= */
+/* ================= LOADER ================= */
 
 #loader {
     position: fixed;
     inset: 0;
-    background: #050505;
     z-index: 9999;
+    background: #050505;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     transition:
         transform 1s cubic-bezier(.77,0,.18,1),
         opacity .4s ease;
@@ -48,58 +49,51 @@ body {
 }
 
 .loader-content {
-    width: min(850px, 85%);
-    position: relative;
+    width: min(850px, 86vw);
 }
 
 .loader-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    font-size: 11px;
+    color: #555;
+    font-size: 10px;
     letter-spacing: 4px;
-    color: #777;
+    margin-bottom: 25px;
 }
 
 .loader-title {
     font-size: clamp(18px, 4vw, 35px);
-    letter-spacing: 8px;
+    letter-spacing: clamp(4px, 1vw, 8px);
     margin-bottom: 35px;
-    font-weight: 700;
 }
 
 .loader-title span {
-    color: #777;
+    color: #555;
 }
-
-/* BIG NUMBER */
 
 .counter {
     display: flex;
     align-items: baseline;
-    gap: 8px;
 }
 
 #percent {
-    font-size: clamp(90px, 20vw, 190px);
+    font-size: clamp(75px, 20vw, 190px);
     line-height: .8;
     font-weight: 800;
-    letter-spacing: -10px;
+    letter-spacing: clamp(-7px, -1vw, -10px);
 }
 
 .percent-symbol {
-    font-size: 25px;
-    color: #777;
+    color: #555;
+    font-size: 20px;
+    margin-left: 8px;
 }
 
-/* PROGRESS */
-
 .progress-container {
-    margin-top: 45px;
     width: 100%;
     height: 3px;
-    background: #222;
+    background: #202020;
+    margin-top: 45px;
     overflow: hidden;
 }
 
@@ -107,21 +101,18 @@ body {
     width: 0%;
     height: 100%;
     background: white;
-    transition: width .08s linear;
 }
 
 .loader-bottom {
-    margin-top: 18px;
     display: flex;
     justify-content: space-between;
-    color: #555;
-    font-size: 10px;
+    margin-top: 18px;
+    color: #444;
+    font-size: 9px;
     letter-spacing: 2px;
 }
 
-/* =========================
-   MAIN WEBSITE
-========================= */
+/* ================= MAIN ================= */
 
 #website {
     opacity: 0;
@@ -134,43 +125,46 @@ body {
     transform: translateY(0);
 }
 
-/* NAVBAR */
+/* NAV */
 
 nav {
-    height: 75px;
-    padding: 0 7%;
+    min-height: 72px;
+    padding: 0 7vw;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #181818;
+
+    border-bottom: 1px solid #171717;
+
     position: sticky;
     top: 0;
+    z-index: 100;
+
     background: rgba(5,5,5,.85);
     backdrop-filter: blur(15px);
-    z-index: 50;
 }
 
 .logo {
-    font-size: 22px;
+    font-size: clamp(18px, 3vw, 23px);
     font-weight: 900;
     letter-spacing: 5px;
 }
 
 .logo span {
-    color: #666;
+    color: #555;
 }
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: clamp(15px, 4vw, 35px);
 }
 
 .nav-links a {
-    color: #777;
+    color: #666;
     text-decoration: none;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 2px;
-    transition: .3s;
 }
 
 .nav-links a:hover {
@@ -180,43 +174,54 @@ nav {
 /* HERO */
 
 .hero {
-    min-height: calc(100vh - 75px);
-    padding: 100px 7%;
+    min-height: calc(100vh - 72px);
+    padding: 10vh 7vw;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     position: relative;
     overflow: hidden;
 }
 
-.hero::before {
+.hero::after {
     content: "";
+
     position: absolute;
-    width: 500px;
-    height: 500px;
-    border: 1px solid #222;
+
+    width: min(55vw, 550px);
+    aspect-ratio: 1;
+
+    right: -15%;
+    top: 15%;
+
+    border: 1px solid #181818;
     border-radius: 50%;
-    right: -150px;
-    top: 100px;
+
     box-shadow:
-        0 0 0 80px #090909,
-        0 0 0 81px #171717,
-        0 0 0 160px #080808,
-        0 0 0 161px #151515;
+        0 0 0 70px #080808,
+        0 0 0 71px #161616,
+        0 0 0 140px #080808,
+        0 0 0 141px #141414;
+
+    pointer-events: none;
 }
 
 .hero-small {
     color: #666;
     letter-spacing: 5px;
-    font-size: 11px;
+    font-size: 10px;
     margin-bottom: 25px;
 }
 
 .hero h1 {
-    font-size: clamp(55px, 11vw, 150px);
-    line-height: .85;
-    letter-spacing: -5px;
-    max-width: 900px;
+    position: relative;
+    z-index: 2;
+
+    font-size: clamp(58px, 12vw, 150px);
+    line-height: .84;
+    letter-spacing: clamp(-3px, -0.5vw, -7px);
 }
 
 .hero h1 span {
@@ -224,22 +229,34 @@ nav {
 }
 
 .hero p {
-    max-width: 500px;
+    position: relative;
+    z-index: 2;
+
+    max-width: 520px;
     color: #777;
     line-height: 1.8;
+    font-size: clamp(12px, 2vw, 14px);
     margin-top: 35px;
-    font-size: 14px;
 }
 
 .hero-button {
-    margin-top: 40px;
+    position: relative;
+    z-index: 2;
+
+    display: inline-block;
     width: fit-content;
-    padding: 15px 25px;
-    border: 1px solid #555;
+
+    margin-top: 38px;
+    padding: 16px 25px;
+
+    border: 1px solid #444;
+
     color: white;
     text-decoration: none;
-    font-size: 11px;
+
+    font-size: 10px;
     letter-spacing: 3px;
+
     transition: .3s;
 }
 
@@ -251,119 +268,84 @@ nav {
 /* SECTIONS */
 
 section {
-    padding: 100px 7%;
+    padding: 100px 7vw;
     border-top: 1px solid #151515;
 }
 
-.section-label {
+.label {
     color: #555;
-    letter-spacing: 4px;
     font-size: 10px;
+    letter-spacing: 4px;
     margin-bottom: 20px;
 }
 
 section h2 {
-    font-size: clamp(35px, 6vw, 70px);
-    margin-bottom: 50px;
+    font-size: clamp(38px, 7vw, 80px);
+    line-height: .95;
 }
 
-/* CHALLENGES */
+/* INFO */
 
-.cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+.info {
+    max-width: 700px;
 }
 
-.card {
-    border: 1px solid #202020;
-    padding: 30px;
-    min-height: 230px;
-    position: relative;
-    transition: .4s;
-    background: #080808;
-}
-
-.card:hover {
-    border-color: #666;
-    transform: translateY(-7px);
-}
-
-.card-number {
-    color: #444;
-    font-size: 12px;
-    letter-spacing: 3px;
-}
-
-.card h3 {
-    margin-top: 50px;
-    font-size: 23px;
-}
-
-.card p {
-    color: #666;
-    font-size: 12px;
-    margin-top: 15px;
-    line-height: 1.6;
-}
-
-.card-status {
-    position: absolute;
-    bottom: 25px;
-    color: #777;
-    font-size: 9px;
-    letter-spacing: 2px;
-}
-
-/* ABOUT */
-
-.about {
-    max-width: 750px;
-}
-
-.about p {
+.info p {
+    margin-top: 35px;
     color: #777;
     line-height: 2;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 /* FOOTER */
 
 footer {
-    padding: 30px 7%;
     border-top: 1px solid #151515;
+    padding: 28px 7vw;
+
     display: flex;
     justify-content: space-between;
+
     color: #444;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 2px;
 }
 
 /* MOBILE */
 
-@media(max-width:700px) {
+@media (max-width: 650px) {
+
+    nav {
+        padding: 0 5vw;
+    }
 
     .nav-links {
-        display: none;
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 8px;
     }
 
     .hero {
-        padding-top: 70px;
+        padding-left: 6vw;
+        padding-right: 6vw;
     }
 
-    .cards {
-        grid-template-columns: 1fr;
+    .hero::after {
+        opacity: .5;
+        width: 70vw;
+        right: -35%;
     }
 
-    .hero h1 {
-        letter-spacing: -3px;
-    }
-
-    #percent {
-        letter-spacing: -6px;
+    section {
+        padding-left: 6vw;
+        padding-right: 6vw;
     }
 
     footer {
+        padding-left: 6vw;
+        padding-right: 6vw;
         flex-direction: column;
         gap: 10px;
     }
@@ -373,9 +355,7 @@ footer {
 
 <body>
 
-<!-- =========================
-     LOADING SCREEN
-========================= -->
+<!-- LOADING -->
 
 <div id="loader">
 
@@ -400,7 +380,7 @@ footer {
         </div>
 
         <div class="loader-bottom">
-            <span>SECURE CONNECTION</span>
+            <span>GAME SYSTEM</span>
             <span id="loadingText">LOADING...</span>
         </div>
 
@@ -409,9 +389,7 @@ footer {
 </div>
 
 
-<!-- =========================
-     WEBSITE
-========================= -->
+<!-- WEBSITE -->
 
 <div id="website">
 
@@ -423,121 +401,57 @@ footer {
 
     <div class="nav-links">
         <a href="#home">HOME</a>
-        <a href="#challenges">CHALLENGES</a>
         <a href="#about">ABOUT</a>
+        <a href="tujuan.html">GAME</a>
     </div>
 
 </nav>
 
 
-<!-- HERO -->
-
 <div class="hero" id="home">
 
     <div class="hero-small">
-        CYBER // WEB // PUZZLES
+        WELCOME TO THE LAB
     </div>
 
     <h1>
         ENTER<br>
-        THE <span>LAB.</span>
+        THE <span>GAME.</span>
     </h1>
 
     <p>
-        A small experimental cyber laboratory.
-        Explore challenges, investigate clues,
-        inspect the source and discover what
-        isn't visible at first glance.
+        Sebuah mini game sederhana dengan
+        beberapa level yang menguji pengetahuan,
+        logika, dan kecepatan berpikir.
     </p>
 
-    <a href="#challenges" class="hero-button">
-        ENTER CHALLENGES →
+    <a href="tujuan.html" class="hero-button">
+        ENTER GAME →
     </a>
 
 </div>
 
 
-<!-- CHALLENGES -->
-
-<section id="challenges">
-
-    <div class="section-label">
-        01 / CHALLENGES
-    </div>
-
-    <h2>Choose your<br>challenge.</h2>
-
-    <div class="cards">
-
-        <div class="card">
-            <div class="card-number">LEVEL 01</div>
-
-            <h3>Hidden Source</h3>
-
-            <p>
-                Not everything visible on the
-                page is the whole story.
-            </p>
-
-            <div class="card-status">
-                WEB INVESTIGATION
-            </div>
-        </div>
-
-
-        <div class="card">
-            <div class="card-number">LEVEL 02</div>
-
-            <h3>Encoded</h3>
-
-            <p>
-                Something strange is hiding
-                inside the data.
-            </p>
-
-            <div class="card-status">
-                ENCODING
-            </div>
-        </div>
-
-
-        <div class="card">
-            <div class="card-number">LEVEL 03</div>
-
-            <h3>Unknown</h3>
-
-            <p>
-                Follow the clues and discover
-                what the system doesn't show.
-            </p>
-
-            <div class="card-status">
-                INVESTIGATION
-            </div>
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ABOUT -->
-
 <section id="about">
 
-    <div class="section-label">
-        02 / ABOUT
+    <div class="label">
+        01 / ABOUT
     </div>
 
-    <div class="about">
+    <div class="info">
 
-        <h2>Learn.<br>Explore.<br>Break puzzles.</h2>
+        <h2>
+            THINK.<br>
+            PLAY.<br>
+            FINISH.
+        </h2>
 
         <p>
-            LAB dibuat sebagai tempat latihan
-            keamanan siber yang aman dan legal.
-            Semua challenge dirancang untuk
-            dipelajari di lingkungan lab sendiri.
+            Selamat datang di LAB.
+            Selesaikan setiap level dan lihat
+            seberapa jauh kamu bisa mencapai.
+            Setiap level mempunyai tantangan
+            yang berbeda.
         </p>
 
     </div>
@@ -546,10 +460,8 @@ footer {
 
 
 <footer>
-
     <span>LAB.SYSTEM</span>
-    <span>BUILT FOR LEARNING</span>
-
+    <span>GAME MODE // ONLINE</span>
 </footer>
 
 </div>
@@ -557,68 +469,64 @@ footer {
 
 <script>
 
-/* =========================
-   LOADING ANIMATION
-========================= */
-
 let number = 0;
 
-const counter = document.getElementById("percent");
+const percent = document.getElementById("percent");
 const progress = document.getElementById("progress");
 const loader = document.getElementById("loader");
 const website = document.getElementById("website");
-
-const statusText = document.getElementById("status");
+const status = document.getElementById("status");
 const loadingText = document.getElementById("loadingText");
 
-function updateLoader() {
+function loading() {
 
     number++;
 
-    counter.textContent =
+    percent.textContent =
         String(number).padStart(3, "0");
 
     progress.style.width = number + "%";
 
     if (number < 30) {
-        statusText.textContent = "BOOTING";
+        status.textContent = "BOOTING";
         loadingText.textContent = "STARTING SYSTEM...";
     }
+
     else if (number < 60) {
-        statusText.textContent = "LOADING";
-        loadingText.textContent = "LOADING MODULES...";
+        status.textContent = "LOADING";
+        loadingText.textContent = "LOADING GAME...";
     }
+
     else if (number < 90) {
-        statusText.textContent = "VERIFYING";
-        loadingText.textContent = "VERIFYING DATA...";
+        status.textContent = "VERIFYING";
+        loadingText.textContent = "CHECKING SYSTEM...";
     }
+
     else {
-        statusText.textContent = "READY";
+        status.textContent = "READY";
         loadingText.textContent = "SYSTEM READY";
     }
 
     if (number < 100) {
 
-        setTimeout(updateLoader, 25);
+        setTimeout(loading, 25);
 
     } else {
 
         setTimeout(() => {
 
             loader.classList.add("hide");
-
             website.classList.add("show");
 
             document.body.style.overflow = "auto";
 
         }, 700);
-
     }
 }
 
 document.body.style.overflow = "hidden";
 
-setTimeout(updateLoader, 500);
+setTimeout(loading, 500);
 
 </script>
 
