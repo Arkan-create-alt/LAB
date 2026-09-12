@@ -1,544 +1,397 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050505">
 
-<title>LAB — Enter Game</title>
+<title>LAB - Security Game</title>
 
 <style>
-
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 body {
+    margin: 0;
     background: #050505;
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
 }
 
-/* HEADER */
+.container {
+    width: 92%;
+    max-width: 700px;
+    margin: auto;
+    padding: 25px 0 50px;
+}
 
 header {
-    min-height: 75px;
-    padding: 0 7vw;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    border-bottom: 1px solid #171717;
-
-    position: sticky;
-    top: 0;
-    z-index: 10;
-
-    background: rgba(5,5,5,.9);
-    backdrop-filter: blur(15px);
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.logo {
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: 5px;
+header h1 {
+    font-size: 42px;
+    margin: 10px 0;
+    letter-spacing: 6px;
+    text-shadow: 0 0 15px #00ff88;
 }
 
-.logo span {
-    color: #555;
+header p {
+    color: #888;
 }
 
-.back {
-    color: #666;
-    text-decoration: none;
-    font-size: 10px;
-    letter-spacing: 2px;
-}
+/* LEVEL */
 
-.back:hover {
-    color: white;
-}
-
-/* MAIN */
-
-main {
-    width: min(1100px, 88vw);
-    margin: auto;
-    padding: 80px 0;
-}
-
-.label {
-    color: #555;
-    font-size: 10px;
-    letter-spacing: 4px;
+.level {
+    background: #0d0d0d;
+    border: 1px solid #222;
+    border-radius: 15px;
+    padding: 20px;
     margin-bottom: 20px;
 }
 
-h1 {
-    font-size: clamp(55px, 11vw, 120px);
-    line-height: .85;
-    letter-spacing: -5px;
-}
-
-.subtitle {
-    color: #777;
-    max-width: 600px;
-    line-height: 1.8;
-    font-size: 14px;
-    margin-top: 30px;
-}
-
-/* LEVELS */
-
-.levels {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 70px;
-}
-
-.level {
-    min-height: 300px;
-
-    border: 1px solid #202020;
-    background: #080808;
-
-    padding: 28px;
-
-    position: relative;
-
-    transition: .35s;
-}
-
-.level:hover {
-    transform: translateY(-6px);
-    border-color: #555;
-}
-
-.number {
-    color: #444;
-    font-size: 11px;
-    letter-spacing: 3px;
-}
-
-.icon {
-    font-size: 35px;
-    margin-top: 35px;
-}
-
 .level h2 {
-    font-size: 25px;
-    margin-top: 20px;
+    margin-top: 0;
 }
 
 .level p {
-    color: #666;
-    font-size: 12px;
-    line-height: 1.7;
-    margin-top: 12px;
+    color: #aaa;
+    line-height: 1.5;
 }
 
-.play {
-    position: absolute;
-    left: 28px;
-    bottom: 25px;
-
-    border: 1px solid #444;
-
-    padding: 12px 18px;
-
-    color: white;
-    background: transparent;
-
-    font-size: 9px;
-    letter-spacing: 2px;
-
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #00ff88;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-
-    transition: .3s;
 }
 
-.play:hover:not(:disabled) {
-    background: white;
-    color: black;
+button:hover {
+    opacity: 0.8;
 }
 
-.play:disabled {
-    color: #333;
-    border-color: #222;
-    cursor: not-allowed;
-}
-
-/* GAME AREA */
-
-#gameArea {
-    display: none;
-    margin-top: 60px;
-    border-top: 1px solid #202020;
-    padding-top: 50px;
-}
-
-.game-box {
-    max-width: 650px;
-    margin: auto;
-    text-align: center;
-}
-
-.game-box h2 {
-    font-size: clamp(30px, 6vw, 55px);
-}
+/* GAME 1 */
 
 .question {
-    color: #aaa;
-    font-size: 18px;
-    margin-top: 30px;
-    min-height: 30px;
-}
-
-input {
-    width: min(350px, 80vw);
-    padding: 15px;
-
-    margin-top: 25px;
-
-    background: #0d0d0d;
-    border: 1px solid #333;
-
-    color: white;
-
-    text-align: center;
-    font-size: 18px;
-
-    outline: none;
-}
-
-input:focus {
-    border-color: #777;
-}
-
-.submit {
-    display: block;
-
-    margin: 15px auto;
-
-    padding: 13px 25px;
-
-    border: 1px solid #444;
-    background: transparent;
-
-    color: white;
-
-    cursor: pointer;
-
-    letter-spacing: 2px;
-}
-
-.submit:hover {
-    background: white;
-    color: black;
-}
-
-.message {
-    min-height: 25px;
-    color: #777;
     margin-top: 15px;
+    padding: 15px;
+    background: #151515;
+    border-radius: 10px;
 }
 
-/* RESPONSIVE */
-
-@media(max-width:800px) {
-
-    main {
-        padding-top: 55px;
-    }
-
-    .levels {
-        grid-template-columns: 1fr;
-    }
-
-    .level {
-        min-height: 260px;
-    }
+.answer {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #080808;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 8px;
 }
 
-@media(max-width:500px) {
-
-    header {
-        padding: 0 5vw;
-    }
-
-    main {
-        width: 90vw;
-    }
-
-    h1 {
-        letter-spacing: -3px;
-    }
-
-    .subtitle {
-        font-size: 13px;
-    }
+.result {
+    margin-top: 10px;
+    font-weight: bold;
 }
 
+/* MULTIPLICATION */
+
+#mathGame {
+    display: none;
+}
+
+#questionMath {
+    font-size: 25px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* ADMIN FINDER */
+
+#finder {
+    display: none;
+}
+
+.warning {
+    padding: 12px;
+    border-left: 4px solid #00ff88;
+    background: #111;
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.finderInput {
+    width: 100%;
+    padding: 13px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #050505;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.scanButton {
+    margin-bottom: 15px;
+}
+
+.results {
+    background: #080808;
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 12px;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.resultLine {
+    padding: 9px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    background: #101010;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+.found {
+    color: #00ff88;
+}
+
+.notfound {
+    color: #777;
+}
+
+.info {
+    color: #aaa;
+}
+
+/* BACK */
+
+.back {
+    margin-top: 15px;
+    background: #171717;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    color: #444;
+    margin-top: 30px;
+    font-size: 12px;
+}
+
+@media(max-width: 450px) {
+    header h1 {
+        font-size: 32px;
+    }
+
+    .container {
+        width: 94%;
+    }
+}
 </style>
 </head>
 
-
 <body>
 
+<div class="container">
+
 <header>
-
-    <div class="logo">
-        LAB<span>.</span>
-    </div>
-
-    <a class="back" href="index.html">
-        ← HOME
-    </a>
-
+    <h1>LAB</h1>
+    <p>Security Learning Game</p>
 </header>
 
+<!-- MENU -->
 
-<main>
+<div id="menu">
 
-    <div class="label">
-        GAME SYSTEM // 01
+    <div class="level">
+        <h2>🎯 Level 1</h2>
+        <p>
+            Jawab pertanyaan dasar seputar komputer dan jaringan.
+        </p>
+        <button onclick="showGame('quiz')">
+            PLAY LEVEL 1
+        </button>
     </div>
 
-    <h1>
-        ENTER<br>
-        GAME.
-    </h1>
-
-    <p class="subtitle">
-        Pilih level dan selesaikan setiap permainan.
-        Level berikutnya akan terbuka setelah
-        level sebelumnya berhasil diselesaikan.
-    </p>
-
-
-    <div class="levels">
-
-        <!-- LEVEL 1 -->
-
-        <div class="level">
-
-            <div class="number">
-                LEVEL 01
-            </div>
-
-            <div class="icon">🧠</div>
-
-            <h2>
-                Tanya & Jawab
-            </h2>
-
-            <p>
-                Jawab beberapa pertanyaan
-                sederhana untuk menguji
-                pengetahuanmu.
-            </p>
-
-            <button class="play" onclick="startLevel(1)">
-                PLAY LEVEL 01 →
-            </button>
-
-        </div>
-
-
-        <!-- LEVEL 2 -->
-
-        <div class="level">
-
-            <div class="number">
-                LEVEL 02
-            </div>
-
-            <div class="icon">✖️</div>
-
-            <h2>
-                Perkalian
-            </h2>
-
-            <p>
-                Selesaikan soal perkalian
-                dasar secepat mungkin.
-            </p>
-
-            <button id="level2Btn"
-                    class="play"
-                    onclick="startLevel(2)"
-                    disabled>
-                🔒 LOCKED
-            </button>
-
-        </div>
-
-
-        <!-- LEVEL 3 -->
-
-        <div class="level">
-
-            <div class="number">
-                LEVEL 03
-            </div>
-
-            <div class="icon">🎯</div>
-
-            <h2>
-                Tebak Angka
-            </h2>
-
-            <p>
-                Tebak angka rahasia dan
-                gunakan petunjuk yang diberikan.
-            </p>
-
-            <button id="level3Btn"
-                    class="play"
-                    onclick="startLevel(3)"
-                    disabled>
-                🔒 LOCKED
-            </button>
-
-        </div>
-
+    <div class="level">
+        <h2>🧮 Level 2</h2>
+        <p>
+            Selesaikan soal perkalian dasar.
+        </p>
+        <button onclick="showGame('math')">
+            PLAY LEVEL 2
+        </button>
     </div>
 
-
-    <!-- GAME -->
-
-    <div id="gameArea">
-
-        <div class="game-box">
-
-            <div class="label" id="gameLabel">
-                LEVEL
-            </div>
-
-            <h2 id="gameTitle">
-                GAME
-            </h2>
-
-            <div class="question" id="question">
-                Pertanyaan
-            </div>
-
-            <input
-                id="answer"
-                type="text"
-                autocomplete="off"
-                placeholder="Tulis jawaban..."
-            >
-
-            <button class="submit" onclick="checkAnswer()">
-                SUBMIT →
-            </button>
-
-            <div class="message" id="message"></div>
-
-        </div>
-
+    <div class="level">
+        <h2>🔎 Level 3</h2>
+        <p>
+            Pelajari konsep Admin Page Finder menggunakan
+            simulasi halaman milik LAB.
+        </p>
+        <button onclick="showGame('finder')">
+            PLAY ADMIN FINDER
+        </button>
     </div>
 
-</main>
+</div>
+
+
+<!-- LEVEL 1 -->
+
+<div id="quiz" class="level hidden">
+
+    <h2>🎯 Level 1 — Q&A</h2>
+
+    <div class="question">
+        <p>
+            Apa fungsi DNS?
+        </p>
+
+        <input
+            id="quizAnswer"
+            class="answer"
+            placeholder="Tulis jawaban..."
+        >
+
+        <button style="margin-top:10px" onclick="checkQuiz()">
+            CHECK
+        </button>
+
+        <div id="quizResult" class="result"></div>
+    </div>
+
+    <button class="back" onclick="backMenu()">
+        ← BACK
+    </button>
+
+</div>
+
+
+<!-- LEVEL 2 -->
+
+<div id="mathGame" class="level">
+
+    <h2>🧮 Level 2 — Math</h2>
+
+    <div id="questionMath">
+        5 × 5 = ?
+    </div>
+
+    <input
+        id="mathAnswer"
+        class="answer"
+        type="number"
+        placeholder="Jawaban..."
+    >
+
+    <button style="margin-top:10px" onclick="checkMath()">
+        CHECK
+    </button>
+
+    <div id="mathResult" class="result"></div>
+
+    <button class="back" onclick="backMenu()">
+        ← BACK
+    </button>
+
+</div>
+
+
+<!-- LEVEL 3 -->
+
+<div id="finder" class="level">
+
+    <h2>🔎 Admin Page Finder</h2>
+
+    <div class="warning">
+        🧪 LAB Simulator<br><br>
+        Mode ini hanya mensimulasikan pencarian halaman
+        administrasi di dalam LAB. Tidak melakukan scanning
+        terhadap website eksternal.
+    </div>
+
+    <input
+        id="target"
+        class="finderInput"
+        value="LAB"
+        placeholder="Nama target LAB..."
+    >
+
+    <button class="scanButton" onclick="startScan()">
+        🔍 START FINDER
+    </button>
+
+    <div id="scanStatus" class="info"></div>
+
+    <br>
+
+    <div id="results" class="results">
+        <div class="info">
+            Tekan START FINDER untuk memulai...
+        </div>
+    </div>
+
+    <button class="back" onclick="backMenu()">
+        ← BACK
+    </button>
+
+</div>
+
+
+<footer>
+    LAB • Web Security Learning
+</footer>
+
+</div>
 
 
 <script>
 
 /* =========================
-   PROGRESS SYSTEM
+   MENU SYSTEM
 ========================= */
 
-let unlocked = Number(
-    localStorage.getItem("labLevel") || 1
-);
+function hideAll() {
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("mathGame").style.display = "none";
+    document.getElementById("finder").style.display = "none";
+}
 
-const level2Btn = document.getElementById("level2Btn");
-const level3Btn = document.getElementById("level3Btn");
+function showGame(game) {
 
-function updateLevels() {
+    hideAll();
 
-    if (unlocked >= 2) {
-        level2Btn.disabled = false;
-        level2Btn.textContent = "PLAY LEVEL 02 →";
+    if (game === "quiz") {
+        document.getElementById("quiz").style.display = "block";
     }
 
-    if (unlocked >= 3) {
-        level3Btn.disabled = false;
-        level3Btn.textContent = "PLAY LEVEL 03 →";
+    if (game === "math") {
+        document.getElementById("mathGame").style.display = "block";
+    }
+
+    if (game === "finder") {
+        document.getElementById("finder").style.display = "block";
     }
 }
 
-updateLevels();
-
-
-/* =========================
-   GAME VARIABLES
-========================= */
-
-let currentLevel = 0;
-let currentAnswer = "";
-
-let questionIndex = 0;
-
-
-/* LEVEL 1 QUESTIONS */
-
-const questions = [
-
-    {
-        q: "Planet tempat kita tinggal adalah?",
-        a: "bumi"
-    },
-
-    {
-        q: "Berapa jumlah hari dalam satu minggu?",
-        a: "7"
-    },
-
-    {
-        q: "Warna yang dihasilkan dari merah + putih?",
-        a: "pink"
-    }
-
-];
-
-
-/* =========================
-   START LEVEL
-========================= */
-
-function startLevel(level) {
-
-    currentLevel = level;
-
-    document.getElementById("gameArea").style.display = "block";
-
-    document
-        .getElementById("gameArea")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-
-    document.getElementById("message").textContent = "";
-
-    if (level === 1) {
-        startQuestion();
-    }
-
-    if (level === 2) {
-        startMultiplication();
-    }
-
-    if (level === 3) {
-        startGuess();
-    }
+function backMenu() {
+    hideAll();
+    document.getElementById("menu").style.display = "block";
 }
 
 
@@ -546,60 +399,27 @@ function startLevel(level) {
    LEVEL 1
 ========================= */
 
-function startQuestion() {
+function checkQuiz() {
 
-    document.getElementById("gameLabel")
-        .textContent = "LEVEL 01 // KNOWLEDGE";
+    let answer =
+        document.getElementById("quizAnswer")
+        .value
+        .toLowerCase()
+        .trim();
 
-    document.getElementById("gameTitle")
-        .textContent = "TANYA & JAWAB";
-
-    questionIndex = 0;
-
-    showQuestion();
-}
-
-
-function showQuestion() {
-
-    currentAnswer =
-        questions[questionIndex].a;
-
-    document.getElementById("question")
-        .textContent =
-        questions[questionIndex].q;
-
-    document.getElementById("answer").value = "";
-}
-
-
-function checkQuestion(answer) {
+    let result =
+        document.getElementById("quizResult");
 
     if (
-        answer.trim().toLowerCase() ===
-        currentAnswer.toLowerCase()
+        answer.includes("domain") ||
+        answer.includes("alamat") ||
+        answer.includes("ip")
     ) {
-
-        questionIndex++;
-
-        if (questionIndex >= questions.length) {
-
-            completeLevel(1);
-
-        } else {
-
-            document.getElementById("message")
-                .textContent =
-                "✓ BENAR! Lanjut...";
-
-            setTimeout(showQuestion, 700);
-        }
-
+        result.innerHTML = "✅ Correct!";
+        result.style.color = "#00ff88";
     } else {
-
-        document.getElementById("message")
-            .textContent =
-            "✕ Jawaban belum tepat.";
+        result.innerHTML = "❌ Coba lagi!";
+        result.style.color = "#ff5555";
     }
 }
 
@@ -608,178 +428,167 @@ function checkQuestion(answer) {
    LEVEL 2
 ========================= */
 
-let num1;
-let num2;
+let number1 = 5;
+let number2 = 5;
 
-function startMultiplication() {
+function checkMath() {
 
-    document.getElementById("gameLabel")
-        .textContent = "LEVEL 02 // MATH";
+    let answer =
+        Number(document.getElementById("mathAnswer").value);
 
-    document.getElementById("gameTitle")
-        .textContent = "PERKALIAN DASAR";
+    let result =
+        document.getElementById("mathResult");
 
-    num1 = Math.floor(Math.random() * 10) + 1;
-    num2 = Math.floor(Math.random() * 10) + 1;
+    if (answer === number1 * number2) {
 
-    currentAnswer = String(num1 * num2);
+        result.innerHTML = "✅ Correct!";
 
-    document.getElementById("question")
-        .textContent =
-        num1 + " × " + num2 + " = ?";
+        result.style.color = "#00ff88";
 
-    document.getElementById("answer").value = "";
-}
+        number1 = Math.floor(Math.random() * 10) + 1;
+        number2 = Math.floor(Math.random() * 10) + 1;
 
+        document.getElementById("questionMath").innerHTML =
+            number1 + " × " + number2 + " = ?";
 
-/* =========================
-   LEVEL 3
-========================= */
-
-let secretNumber;
-
-function startGuess() {
-
-    document.getElementById("gameLabel")
-        .textContent = "LEVEL 03 // LOGIC";
-
-    document.getElementById("gameTitle")
-        .textContent = "TEBAK ANGKA";
-
-    secretNumber =
-        Math.floor(Math.random() * 20) + 1;
-
-    currentAnswer = String(secretNumber);
-
-    document.getElementById("question")
-        .textContent =
-        "Aku memilih angka 1–20. Tebak!";
-
-    document.getElementById("answer").value = "";
-}
-
-
-/* =========================
-   CHECK ANSWER
-========================= */
-
-function checkAnswer() {
-
-    const answer =
-        document.getElementById("answer")
-        .value
-        .trim();
-
-    if (!answer) return;
-
-
-    if (currentLevel === 1) {
-
-        checkQuestion(answer);
-
-        return;
-    }
-
-
-    if (currentLevel === 2) {
-
-        if (answer === currentAnswer) {
-
-            completeLevel(2);
-
-        } else {
-
-            document.getElementById("message")
-                .textContent =
-                "✕ Salah. Coba lagi!";
-        }
-
-        return;
-    }
-
-
-    if (currentLevel === 3) {
-
-        const guess = Number(answer);
-
-        if (guess === secretNumber) {
-
-            completeLevel(3);
-
-        } else if (guess < secretNumber) {
-
-            document.getElementById("message")
-                .textContent =
-                "↑ Terlalu kecil!";
-
-        } else {
-
-            document.getElementById("message")
-                .textContent =
-                "↓ Terlalu besar!";
-        }
-
-    }
-}
-
-
-/* =========================
-   COMPLETE
-========================= */
-
-function completeLevel(level) {
-
-    document.getElementById("message")
-        .textContent =
-        "✓ LEVEL " + level + " SELESAI! 🎉";
-
-
-    if (unlocked <= level) {
-
-        unlocked = level + 1;
-
-        if (unlocked > 4) {
-            unlocked = 4;
-        }
-
-        localStorage.setItem(
-            "labLevel",
-            unlocked
-        );
-
-        updateLevels();
-    }
-
-
-    if (level === 3) {
-
-        document.getElementById("question")
-            .textContent =
-            "🏆 SEMUA LEVEL SELESAI!";
+        document.getElementById("mathAnswer").value = "";
 
     } else {
 
-        setTimeout(() => {
-
-            document.getElementById("question")
-                .textContent =
-                "Level berikutnya sudah terbuka!";
-
-        }, 500);
+        result.innerHTML = "❌ Salah, coba lagi!";
+        result.style.color = "#ff5555";
     }
 }
 
 
-/* ENTER KEY */
+/* =========================
+   ADMIN PAGE FINDER
+========================= */
 
-document.getElementById("answer")
-.addEventListener("keydown", function(event) {
+/*
+   Daftar halaman dummy untuk LAB.
+   Ini hanya simulasi.
+*/
 
-    if (event.key === "Enter") {
-        checkAnswer();
+const labPages = [
+
+    {
+        path: "/admin.html",
+        status: 200,
+        name: "Admin Page"
+    },
+
+    {
+        path: "/admin-login.html",
+        status: 200,
+        name: "Admin Login"
+    },
+
+    {
+        path: "/admin-panel.html",
+        status: 200,
+        name: "Admin Panel"
+    },
+
+    {
+        path: "/dashboard.html",
+        status: 404,
+        name: "Dashboard"
+    },
+
+    {
+        path: "/administrator.html",
+        status: 404,
+        name: "Administrator"
+    },
+
+    {
+        path: "/login.html",
+        status: 404,
+        name: "Login"
+    },
+
+    {
+        path: "/controlpanel.html",
+        status: 404,
+        name: "Control Panel"
     }
 
-});
+];
+
+
+function startScan() {
+
+    let results =
+        document.getElementById("results");
+
+    let status =
+        document.getElementById("scanStatus");
+
+    let target =
+        document.getElementById("target").value.trim();
+
+    if (!target) {
+        status.innerHTML = "⚠️ Masukkan nama target LAB.";
+        return;
+    }
+
+    results.innerHTML = "";
+
+    status.innerHTML =
+        "🔄 Mencari halaman di LAB...";
+
+    let index = 0;
+
+    function nextScan() {
+
+        if (index >= labPages.length) {
+
+            status.innerHTML =
+                "✅ Finder selesai.";
+
+            return;
+        }
+
+        let page = labPages[index];
+
+        let line =
+            document.createElement("div");
+
+        line.className = "resultLine";
+
+        if (page.status === 200) {
+
+            line.classList.add("found");
+
+            line.innerHTML =
+                "[FOUND] " +
+                target +
+                page.path +
+                " → HTTP " +
+                page.status;
+
+        } else {
+
+            line.classList.add("notfound");
+
+            line.innerHTML =
+                "[NOT FOUND] " +
+                target +
+                page.path +
+                " → HTTP " +
+                page.status;
+        }
+
+        results.appendChild(line);
+
+        index++;
+
+        setTimeout(nextScan, 350);
+    }
+
+    nextScan();
+}
 
 </script>
 
