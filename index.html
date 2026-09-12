@@ -3,95 +3,531 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LAB</title>
+<meta name="theme-color" content="#050505">
+
+<title>LAB — Game</title>
 
 <style>
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    margin: 0;
-    min-height: 100vh;
     background: #050505;
-    color: white;
-    font-family: Arial, sans-serif;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ================= LOADER ================= */
+
+#loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #050505;
+
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    transition:
+        transform 1s cubic-bezier(.77,0,.18,1),
+        opacity .4s ease;
+}
+
+#loader.hide {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader-content {
+    width: min(850px, 86vw);
+}
+
+.loader-top {
+    display: flex;
+    justify-content: space-between;
+    color: #555;
+    font-size: 10px;
+    letter-spacing: 4px;
+    margin-bottom: 25px;
+}
+
+.loader-title {
+    font-size: clamp(18px, 4vw, 35px);
+    letter-spacing: clamp(4px, 1vw, 8px);
+    margin-bottom: 35px;
+}
+
+.loader-title span {
+    color: #555;
+}
+
+.counter {
+    display: flex;
+    align-items: baseline;
+}
+
+#percent {
+    font-size: clamp(75px, 20vw, 190px);
+    line-height: .8;
+    font-weight: 800;
+    letter-spacing: clamp(-7px, -1vw, -10px);
+}
+
+.percent-symbol {
+    color: #555;
+    font-size: 20px;
+    margin-left: 8px;
+}
+
+.progress-container {
+    width: 100%;
+    height: 3px;
+    background: #202020;
+    margin-top: 45px;
     overflow: hidden;
 }
 
-.loader {
-    text-align: center;
-    width: 90%;
-    max-width: 400px;
+#progress {
+    width: 0%;
+    height: 100%;
+    background: white;
+}
+
+.loader-bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
+    color: #444;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+/* ================= MAIN ================= */
+
+#website {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 1s ease;
+}
+
+#website.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* NAV */
+
+nav {
+    min-height: 72px;
+    padding: 0 7vw;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #171717;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    background: rgba(5,5,5,.85);
+    backdrop-filter: blur(15px);
 }
 
 .logo {
-    font-size: 55px;
-    font-weight: bold;
-    letter-spacing: 8px;
-    margin-bottom: 25px;
-    text-shadow: 0 0 15px #00ff88;
+    font-size: clamp(18px, 3vw, 23px);
+    font-weight: 900;
+    letter-spacing: 5px;
 }
 
-.text {
-    font-size: 15px;
-    color: #aaa;
-    margin-bottom: 20px;
+.logo span {
+    color: #555;
 }
 
-.bar {
-    width: 100%;
-    height: 8px;
-    border: 1px solid #00ff88;
-    border-radius: 10px;
+.nav-links {
+    display: flex;
+    gap: clamp(15px, 4vw, 35px);
+}
+
+.nav-links a {
+    color: #666;
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+/* HERO */
+
+.hero {
+    min-height: calc(100vh - 72px);
+    padding: 10vh 7vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    position: relative;
     overflow: hidden;
 }
 
-.progress {
-    height: 100%;
-    width: 0%;
-    background: #00ff88;
-    animation: loading 3s linear forwards;
+.hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: min(55vw, 550px);
+    aspect-ratio: 1;
+
+    right: -15%;
+    top: 15%;
+
+    border: 1px solid #181818;
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 70px #080808,
+        0 0 0 71px #161616,
+        0 0 0 140px #080808,
+        0 0 0 141px #141414;
+
+    pointer-events: none;
 }
 
-@keyframes loading {
-    from { width: 0%; }
-    to { width: 100%; }
+.hero-small {
+    color: #666;
+    letter-spacing: 5px;
+    font-size: 10px;
+    margin-bottom: 25px;
 }
 
-.version {
-    margin-top: 15px;
-    font-size: 12px;
+.hero h1 {
+    position: relative;
+    z-index: 2;
+
+    font-size: clamp(58px, 12vw, 150px);
+    line-height: .84;
+    letter-spacing: clamp(-3px, -0.5vw, -7px);
+}
+
+.hero h1 span {
+    color: #444;
+}
+
+.hero p {
+    position: relative;
+    z-index: 2;
+
+    max-width: 520px;
+    color: #777;
+    line-height: 1.8;
+    font-size: clamp(12px, 2vw, 14px);
+    margin-top: 35px;
+}
+
+.hero-button {
+    position: relative;
+    z-index: 2;
+
+    display: inline-block;
+    width: fit-content;
+
+    margin-top: 38px;
+    padding: 16px 25px;
+
+    border: 1px solid #444;
+
+    color: white;
+    text-decoration: none;
+
+    font-size: 10px;
+    letter-spacing: 3px;
+
+    transition: .3s;
+}
+
+.hero-button:hover {
+    background: white;
+    color: black;
+}
+
+/* SECTIONS */
+
+section {
+    padding: 100px 7vw;
+    border-top: 1px solid #151515;
+}
+
+.label {
     color: #555;
+    font-size: 10px;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+section h2 {
+    font-size: clamp(38px, 7vw, 80px);
+    line-height: .95;
+}
+
+/* INFO */
+
+.info {
+    max-width: 700px;
+}
+
+.info p {
+    margin-top: 35px;
+    color: #777;
+    line-height: 2;
+    font-size: 14px;
+}
+
+/* FOOTER */
+
+footer {
+    border-top: 1px solid #151515;
+    padding: 28px 7vw;
+
+    display: flex;
+    justify-content: space-between;
+
+    color: #444;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    nav {
+        padding: 0 5vw;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 8px;
+    }
+
+    .hero {
+        padding-left: 6vw;
+        padding-right: 6vw;
+    }
+
+    .hero::after {
+        opacity: .5;
+        width: 70vw;
+        right: -35%;
+    }
+
+    section {
+        padding-left: 6vw;
+        padding-right: 6vw;
+    }
+
+    footer {
+        padding-left: 6vw;
+        padding-right: 6vw;
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="loader">
-    <div class="logo">LAB</div>
+<!-- LOADING -->
 
-    <div class="text">
-        Initializing Laboratory...
+<div id="loader">
+
+    <div class="loader-content">
+
+        <div class="loader-top">
+            <span>LAB.SYSTEM</span>
+            <span id="status">BOOTING</span>
+        </div>
+
+        <div class="loader-title">
+            INITIALIZING <span>LAB</span>
+        </div>
+
+        <div class="counter">
+            <div id="percent">000</div>
+            <div class="percent-symbol">%</div>
+        </div>
+
+        <div class="progress-container">
+            <div id="progress"></div>
+        </div>
+
+        <div class="loader-bottom">
+            <span>GAME SYSTEM</span>
+            <span id="loadingText">LOADING...</span>
+        </div>
+
     </div>
 
-    <div class="bar">
-        <div class="progress"></div>
-    </div>
-
-    <div class="version">
-        Web Security Learning Lab
-    </div>
 </div>
 
+
+<!-- WEBSITE -->
+
+<div id="website">
+
+<nav>
+
+    <div class="logo">
+        LAB<span>.</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="#home">HOME</a>
+        <a href="#about">ABOUT</a>
+        <a href="tujuan.html">GAME</a>
+    </div>
+
+</nav>
+
+
+<div class="hero" id="home">
+
+    <div class="hero-small">
+        WELCOME TO THE LAB
+    </div>
+
+    <h1>
+        ENTER<br>
+        THE <span>GAME.</span>
+    </h1>
+
+    <p>
+        Sebuah mini game sederhana dengan
+        beberapa level yang menguji pengetahuan,
+        logika, dan kecepatan berpikir.
+    </p>
+
+    <a href="tujuan.html" class="hero-button">
+        ENTER GAME →
+    </a>
+
+</div>
+
+
+<section id="about">
+
+    <div class="label">
+        01 / ABOUT
+    </div>
+
+    <div class="info">
+
+        <h2>
+            THINK.<br>
+            PLAY.<br>
+            FINISH.
+        </h2>
+
+        <p>
+            Selamat datang di LAB.
+            Selesaikan setiap level dan lihat
+            seberapa jauh kamu bisa mencapai.
+            Setiap level mempunyai tantangan
+            yang berbeda.
+        </p>
+
+    </div>
+
+</section>
+
+
+<footer>
+    <span>LAB.SYSTEM</span>
+    <span>GAME MODE // ONLINE</span>
+</footer>
+
+</div>
+
+
 <script>
-setTimeout(() => {
-    window.location.href = "tujuan.html";
-}, 3200);
+
+let number = 0;
+
+const percent = document.getElementById("percent");
+const progress = document.getElementById("progress");
+const loader = document.getElementById("loader");
+const website = document.getElementById("website");
+const status = document.getElementById("status");
+const loadingText = document.getElementById("loadingText");
+
+function loading() {
+
+    number++;
+
+    percent.textContent =
+        String(number).padStart(3, "0");
+
+    progress.style.width = number + "%";
+
+    if (number < 30) {
+        status.textContent = "BOOTING";
+        loadingText.textContent = "STARTING SYSTEM...";
+    }
+
+    else if (number < 60) {
+        status.textContent = "LOADING";
+        loadingText.textContent = "LOADING GAME...";
+    }
+
+    else if (number < 90) {
+        status.textContent = "VERIFYING";
+        loadingText.textContent = "CHECKING SYSTEM...";
+    }
+
+    else {
+        status.textContent = "READY";
+        loadingText.textContent = "SYSTEM READY";
+    }
+
+    if (number < 100) {
+
+        setTimeout(loading, 25);
+
+    } else {
+
+        setTimeout(() => {
+
+            loader.classList.add("hide");
+            website.classList.add("show");
+
+            document.body.style.overflow = "auto";
+
+        }, 700);
+    }
+}
+
+document.body.style.overflow = "hidden";
+
+setTimeout(loading, 500);
+
 </script>
 
 </body>
