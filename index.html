@@ -1,534 +1,158 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050505">
-
-<title>LAB — Game</title>
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    background: #050505;
-    color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
-    overflow-x: hidden;
-}
-
-/* ================= LOADER ================= */
-
-#loader {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: #050505;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition:
-        transform 1s cubic-bezier(.77,0,.18,1),
-        opacity .4s ease;
-}
-
-#loader.hide {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
-}
-
-.loader-content {
-    width: min(850px, 86vw);
-}
-
-.loader-top {
-    display: flex;
-    justify-content: space-between;
-    color: #555;
-    font-size: 10px;
-    letter-spacing: 4px;
-    margin-bottom: 25px;
-}
-
-.loader-title {
-    font-size: clamp(18px, 4vw, 35px);
-    letter-spacing: clamp(4px, 1vw, 8px);
-    margin-bottom: 35px;
-}
-
-.loader-title span {
-    color: #555;
-}
-
-.counter {
-    display: flex;
-    align-items: baseline;
-}
-
-#percent {
-    font-size: clamp(75px, 20vw, 190px);
-    line-height: .8;
-    font-weight: 800;
-    letter-spacing: clamp(-7px, -1vw, -10px);
-}
-
-.percent-symbol {
-    color: #555;
-    font-size: 20px;
-    margin-left: 8px;
-}
-
-.progress-container {
-    width: 100%;
-    height: 3px;
-    background: #202020;
-    margin-top: 45px;
-    overflow: hidden;
-}
-
-#progress {
-    width: 0%;
-    height: 100%;
-    background: white;
-}
-
-.loader-bottom {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 18px;
-    color: #444;
-    font-size: 9px;
-    letter-spacing: 2px;
-}
-
-/* ================= MAIN ================= */
-
-#website {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: 1s ease;
-}
-
-#website.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* NAV */
-
-nav {
-    min-height: 72px;
-    padding: 0 7vw;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    border-bottom: 1px solid #171717;
-
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    background: rgba(5,5,5,.85);
-    backdrop-filter: blur(15px);
-}
-
-.logo {
-    font-size: clamp(18px, 3vw, 23px);
-    font-weight: 900;
-    letter-spacing: 5px;
-}
-
-.logo span {
-    color: #555;
-}
-
-.nav-links {
-    display: flex;
-    gap: clamp(15px, 4vw, 35px);
-}
-
-.nav-links a {
-    color: #666;
-    text-decoration: none;
-    font-size: 10px;
-    letter-spacing: 2px;
-}
-
-.nav-links a:hover {
-    color: white;
-}
-
-/* HERO */
-
-.hero {
-    min-height: calc(100vh - 72px);
-    padding: 10vh 7vw;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::after {
-    content: "";
-
-    position: absolute;
-
-    width: min(55vw, 550px);
-    aspect-ratio: 1;
-
-    right: -15%;
-    top: 15%;
-
-    border: 1px solid #181818;
-    border-radius: 50%;
-
-    box-shadow:
-        0 0 0 70px #080808,
-        0 0 0 71px #161616,
-        0 0 0 140px #080808,
-        0 0 0 141px #141414;
-
-    pointer-events: none;
-}
-
-.hero-small {
-    color: #666;
-    letter-spacing: 5px;
-    font-size: 10px;
-    margin-bottom: 25px;
-}
-
-.hero h1 {
-    position: relative;
-    z-index: 2;
-
-    font-size: clamp(58px, 12vw, 150px);
-    line-height: .84;
-    letter-spacing: clamp(-3px, -0.5vw, -7px);
-}
-
-.hero h1 span {
-    color: #444;
-}
-
-.hero p {
-    position: relative;
-    z-index: 2;
-
-    max-width: 520px;
-    color: #777;
-    line-height: 1.8;
-    font-size: clamp(12px, 2vw, 14px);
-    margin-top: 35px;
-}
-
-.hero-button {
-    position: relative;
-    z-index: 2;
-
-    display: inline-block;
-    width: fit-content;
-
-    margin-top: 38px;
-    padding: 16px 25px;
-
-    border: 1px solid #444;
-
-    color: white;
-    text-decoration: none;
-
-    font-size: 10px;
-    letter-spacing: 3px;
-
-    transition: .3s;
-}
-
-.hero-button:hover {
-    background: white;
-    color: black;
-}
-
-/* SECTIONS */
-
-section {
-    padding: 100px 7vw;
-    border-top: 1px solid #151515;
-}
-
-.label {
-    color: #555;
-    font-size: 10px;
-    letter-spacing: 4px;
-    margin-bottom: 20px;
-}
-
-section h2 {
-    font-size: clamp(38px, 7vw, 80px);
-    line-height: .95;
-}
-
-/* INFO */
-
-.info {
-    max-width: 700px;
-}
-
-.info p {
-    margin-top: 35px;
-    color: #777;
-    line-height: 2;
-    font-size: 14px;
-}
-
-/* FOOTER */
-
-footer {
-    border-top: 1px solid #151515;
-    padding: 28px 7vw;
-
-    display: flex;
-    justify-content: space-between;
-
-    color: #444;
-    font-size: 9px;
-    letter-spacing: 2px;
-}
-
-/* MOBILE */
-
-@media (max-width: 650px) {
-
-    nav {
-        padding: 0 5vw;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Guru - Lab</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
     }
 
-    .nav-links {
-        gap: 12px;
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f6fa;
     }
 
-    .nav-links a {
-        font-size: 8px;
+    .login-box {
+      width: 380px;
+      background: white;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.12);
     }
 
-    .hero {
-        padding-left: 6vw;
-        padding-right: 6vw;
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      color: #172b4d;
     }
 
-    .hero::after {
-        opacity: .5;
-        width: 70vw;
-        right: -35%;
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 28px;
     }
 
-    section {
-        padding-left: 6vw;
-        padding-right: 6vw;
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: 600;
+      color: #374151;
     }
 
-    footer {
-        padding-left: 6vw;
-        padding-right: 6vw;
-        flex-direction: column;
-        gap: 10px;
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 7px;
+      font-size: 15px;
     }
-}
-</style>
+
+    input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 13px;
+      border: 0;
+      border-radius: 7px;
+      background: #2563eb;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    #error {
+      display: none;
+      margin-top: 15px;
+      padding: 11px;
+      border-radius: 6px;
+      background: #fee2e2;
+      color: #b91c1c;
+      font-size: 14px;
+    }
+
+    .lab {
+      margin-top: 22px;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 12px;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
+  <div class="login-box">
+    <h1>Portal Guru</h1>
+    <div class="subtitle">Silakan masuk ke akun Anda</div>
 
-<div id="loader">
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        name="email"
+        type="text"
+        autocomplete="username"
+        required
+      >
 
-    <div class="loader-content">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        required
+      >
 
-        <div class="loader-top">
-            <span>LAB.SYSTEM</span>
-            <span id="status">BOOTING</span>
-        </div>
+      <button type="submit">Masuk</button>
 
-        <div class="loader-title">
-            INITIALIZING <span>LAB</span>
-        </div>
+      <div id="error">Email atau password salah.</div>
+    </form>
 
-        <div class="counter">
-            <div id="percent">000</div>
-            <div class="percent-symbol">%</div>
-        </div>
-
-        <div class="progress-container">
-            <div id="progress"></div>
-        </div>
-
-        <div class="loader-bottom">
-            <span>GAME SYSTEM</span>
-            <span id="loadingText">LOADING...</span>
-        </div>
-
+    <div class="lab">
+      EDUCATIONAL LOGIN LAB
     </div>
+  </div>
 
-</div>
+  <script>
+    /*
+      DUMMY CREDENTIAL UNTUK LAB.
+      Ini BUKAN sistem autentikasi sungguhan.
+    */
+    const LAB_EMAIL = "admin";
+    const LAB_PASSWORD = "admin123";
 
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-<!-- WEBSITE -->
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const error = document.getElementById("error");
 
-<div id="website">
-
-<nav>
-
-    <div class="logo">
-        LAB<span>.</span>
-    </div>
-
-    <div class="nav-links">
-        <a href="#home">HOME</a>
-        <a href="#about">ABOUT</a>
-        <a href="tujuan.html">GAME</a>
-    </div>
-
-</nav>
-
-
-<div class="hero" id="home">
-
-    <div class="hero-small">
-        WELCOME TO THE LAB
-    </div>
-
-    <h1>
-        ENTER<br>
-        THE <span>GAME.</span>
-    </h1>
-
-    <p>
-        Sebuah mini game sederhana dengan
-        beberapa level yang menguji pengetahuan,
-        logika, dan kecepatan berpikir.
-    </p>
-
-    <a href="tujuan.html" class="hero-button">
-        ENTER GAME →
-    </a>
-
-</div>
-
-
-<section id="about">
-
-    <div class="label">
-        01 / ABOUT
-    </div>
-
-    <div class="info">
-
-        <h2>
-            THINK.<br>
-            PLAY.<br>
-            FINISH.
-        </h2>
-
-        <p>
-            Selamat datang di LAB.
-            Selesaikan setiap level dan lihat
-            seberapa jauh kamu bisa mencapai.
-            Setiap level mempunyai tantangan
-            yang berbeda.
-        </p>
-
-    </div>
-
-</section>
-
-
-<footer>
-    <span>LAB.SYSTEM</span>
-    <span>GAME MODE // ONLINE</span>
-</footer>
-
-</div>
-
-
-<script>
-
-let number = 0;
-
-const percent = document.getElementById("percent");
-const progress = document.getElementById("progress");
-const loader = document.getElementById("loader");
-const website = document.getElementById("website");
-const status = document.getElementById("status");
-const loadingText = document.getElementById("loadingText");
-
-function loading() {
-
-    number++;
-
-    percent.textContent =
-        String(number).padStart(3, "0");
-
-    progress.style.width = number + "%";
-
-    if (number < 30) {
-        status.textContent = "BOOTING";
-        loadingText.textContent = "STARTING SYSTEM...";
-    }
-
-    else if (number < 60) {
-        status.textContent = "LOADING";
-        loadingText.textContent = "LOADING GAME...";
-    }
-
-    else if (number < 90) {
-        status.textContent = "VERIFYING";
-        loadingText.textContent = "CHECKING SYSTEM...";
-    }
-
-    else {
-        status.textContent = "READY";
-        loadingText.textContent = "SYSTEM READY";
-    }
-
-    if (number < 100) {
-
-        setTimeout(loading, 25);
-
-    } else {
-
-        setTimeout(() => {
-
-            loader.classList.add("hide");
-            website.classList.add("show");
-
-            document.body.style.overflow = "auto";
-
-        }, 700);
-    }
-}
-
-document.body.style.overflow = "hidden";
-
-setTimeout(loading, 500);
-
-</script>
+      if (email === LAB_EMAIL && password === LAB_PASSWORD) {
+        window.location.href = "tujuan.html";
+      } else {
+        error.style.display = "block";
+      }
+    });
+  </script>
 
 </body>
 </html>
