@@ -2,409 +2,86 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080b16">
-<title>NEXUS GAMES | Play</title>
-
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  min-height: 100vh;
-  background: #080b16;
-  color: white;
-  font-family: Arial, sans-serif;
-  padding: 25px 15px;
-}
-
-header {
-  max-width: 900px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.logo {
-  font-size: 25px;
-  font-weight: 900;
-  color: #93c5fd;
-  letter-spacing: 3px;
-}
-
-.back {
-  color: #94a3b8;
-  text-decoration: none;
-}
-
-.container {
-  max-width: 900px;
-  margin: 45px auto;
-}
-
-h1 {
-  font-size: clamp(28px, 6vw, 42px);
-  margin-bottom: 10px;
-}
-
-.desc {
-  color: #94a3b8;
-  line-height: 1.6;
-}
-
-.levels {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 15px;
-  margin: 35px 0;
-}
-
-.level {
-  padding: 25px 10px;
-  background: #111827;
-  border: 1px solid #26334d;
-  border-radius: 16px;
-  color: white;
-  cursor: pointer;
-  transition: .25s;
-}
-
-.level:hover:not(:disabled) {
-  border-color: #60a5fa;
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px #3b82f633;
-}
-
-.level:disabled {
-  opacity: .35;
-  cursor: not-allowed;
-}
-
-.level .number {
-  display: block;
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.level small {
-  color: #94a3b8;
-}
-
-.panel {
-  display: none;
-  background: #111827;
-  border: 1px solid #334155;
-  padding: clamp(20px, 5vw, 35px);
-  border-radius: 20px;
-  margin-top: 25px;
-}
-
-.panel h2 {
-  color: #93c5fd;
-  margin-bottom: 15px;
-}
-
-.question {
-  font-size: 20px;
-  line-height: 1.6;
-  margin: 25px 0;
-}
-
-input {
-  width: 100%;
-  padding: 15px;
-  border-radius: 10px;
-  background: #080b16;
-  border: 1px solid #334155;
-  color: white;
-  font-size: 16px;
-  outline: none;
-}
-
-input:focus {
-  border-color: #60a5fa;
-}
-
-.action {
-  width: 100%;
-  padding: 15px;
-  margin-top: 15px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(100deg, #2563eb, #9333ea);
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-.action:hover {
-  opacity: .85;
-}
-
-.message {
-  margin-top: 18px;
-  line-height: 1.6;
-  color: #93c5fd;
-}
-
-.progress {
-  height: 7px;
-  background: #26334d;
-  border-radius: 10px;
-  margin-top: 20px;
-  overflow: hidden;
-}
-
-.bar {
-  height: 100%;
-  background: #3b82f6;
-  transition: .4s;
-}
-
-footer {
-  text-align: center;
-  color: #475569;
-  margin: 60px 0 20px;
-  font-size: 12px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guardian Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+<body data-page="dashboard">
 
-<body>
+  <header class="topbar">
+    <div class="brand">◈ GUARDIAN</div>
+    <button class="logout" id="logoutBtn">LOGOUT</button>
+  </header>
 
-<header>
-  <div class="logo">NEXUS GAMES</div>
-  <a href="index.html" class="back">← HOME</a>
-</header>
+  <main class="container">
+    <h1>Dashboard</h1>
+    <p class="muted">Welcome, Administrator.</p>
 
-<main class="container">
-  <h1>Choose Your Challenge</h1>
-  <p class="desc">
-    Selesaikan setiap tantangan untuk membuka level berikutnya.
-    Bisakah kamu mencapai FINAL BOSS?
-  </p>
+    <section class="device-card">
+      <div class="device-icon">📱</div>
+      <div>
+        <h2>Infinix Device</h2>
+        <span class="status">DEMO MODE</span>
+        <p class="muted">Belum ada perangkat terhubung.</p>
+      </div>
+    </section>
 
-  <div class="levels" id="levels"></div>
+    <h2 class="section-title">Device Management</h2>
 
-  <section class="panel" id="game">
-    <h2 id="levelTitle"></h2>
-    <p class="desc" id="levelDesc"></p>
+    <section class="grid">
+      <div class="panel">
+        <span class="panel-icon">📲</span>
+        <h3>Open App</h3>
+        <p>Permintaan membuka aplikasi.</p>
+        <button class="secondary demo-action"
+                data-action="open">
+          Request Open
+        </button>
+      </div>
 
-    <div class="progress">
-      <div class="bar" id="bar" style="width:20%"></div>
-    </div>
+      <div class="panel">
+        <span class="panel-icon">⏹️</span>
+        <h3>Close App</h3>
+        <p>Permintaan menutup aplikasi.</p>
+        <button class="secondary demo-action"
+                data-action="close">
+          Request Close
+        </button>
+      </div>
 
-    <div class="question" id="question"></div>
+      <div class="panel">
+        <span class="panel-icon">🔔</span>
+        <h3>Warning</h3>
+        <p>Mengirim peringatan kepada pengguna.</p>
+        <button class="secondary demo-action"
+                data-action="warning">
+          Send Warning
+        </button>
+      </div>
 
-    <input id="answer" placeholder="Masukkan jawaban...">
+      <div class="panel">
+        <span class="panel-icon">🛡️</span>
+        <h3>Permissions</h3>
+        <p>Pengaturan izin perangkat.</p>
+        <button class="secondary demo-action"
+                data-action="permission">
+          View Permissions
+        </button>
+      </div>
+    </section>
 
-    <button class="action" onclick="checkAnswer()">
-      SUBMIT ANSWER
-    </button>
+    <section class="panel notifications">
+      <h2>Activity Log</h2>
+      <div id="activityLog">
+        <p class="muted">Belum ada aktivitas.</p>
+      </div>
+    </section>
 
-    <div class="message" id="message"></div>
+    <footer>INFINIX GUARDIAN © 2026</footer>
+  </main>
 
-    <button class="action" id="next"
-      style="display:none"
-      onclick="nextLevel()">
-      UNLOCK NEXT LEVEL →
-    </button>
-  </section>
-</main>
-
-<footer>NEXUS GAMES © 2026 • ALL RIGHTS RESERVED</footer>
-
-<script>
-const challenges = [
-  {
-    title: "LEVEL 1 — QUIZ MASTER",
-    desc: "Uji pengetahuan umum kamu!",
-    questions: [
-      { q: "Planet apa yang dikenal sebagai Planet Merah?", a: ["mars"] },
-      { q: "Berapa hasil 12 x 5?", a: ["60"] },
-      { q: "Apa nama satelit alami Bumi?", a: ["bulan"] }
-    ]
-  },
-  {
-    title: "LEVEL 2 — NUMBER HUNTER",
-    desc: "Tebak angka rahasia!",
-    questions: [
-      { q: "Aku angka antara 1-20. Aku adalah hasil 7 x 2. Berapa aku?", a: ["14"] },
-      { q: "Angka berikutnya: 2, 4, 8, 16, ...", a: ["32"] },
-      { q: "Berapa hasil 144 dibagi 12?", a: ["12"] }
-    ]
-  },
-  {
-    title: "LEVEL 3 — MEMORY TEST",
-    desc: "Uji ingatan dan konsentrasi kamu!",
-    questions: [
-      { q: "Sebutkan warna langit cerah pada siang hari!", a: ["biru"] },
-      { q: "Berapa jumlah huruf dalam kata NEXUS?", a: ["5"] },
-      { q: "Lengkapi pola: A, B, C, D, ...", a: ["e"] }
-    ]
-  },
-  {
-    title: "LEVEL 4 — WORD MYSTERY",
-    desc: "Pecahkan teka-teki kata!",
-    questions: [
-      { q: "Aku punya jarum tapi tidak bisa menjahit. Apakah aku?", a: ["jam"] },
-      { q: "Susun kata: U K B U", a: ["buku"] },
-      { q: "Aku punya banyak gigi tetapi tidak bisa makan. Apakah aku?", a: ["sisir"] }
-    ]
-  },
-  {
-    title: "LEVEL 5 — FINAL BOSS",
-    desc: "Buktikan kalau kamu master sejati!",
-    questions: [
-      { q: "Jika 5 mesin membuat 5 barang dalam 5 menit, berapa menit 100 mesin membuat 100 barang?", a: ["5"] },
-      { q: "Aku bilangan ganjil antara 20 dan 30, habis dibagi 3. Siapakah aku?", a: ["21", "27"] },
-      { q: "Berapa hasil 2 pangkat 5 ditambah 8?", a: ["40"] }
-    ]
-  }
-];
-
-let unlocked = Number(localStorage.getItem("nexusUnlocked") || 1);
-let currentLevel = 0;
-let questionIndex = 0;
-let mistakes = 0;
-let completed = false;
-
-function renderLevels() {
-  const container = document.getElementById("levels");
-  container.innerHTML = "";
-
-  challenges.forEach((level, i) => {
-    const number = i + 1;
-    const button = document.createElement("button");
-
-    button.className = "level";
-    button.disabled = number > unlocked;
-    button.innerHTML = `
-      <span class="number">${number > unlocked ? "🔒" : "★"}</span>
-      <strong>LEVEL ${number}</strong><br>
-      <small>${number > unlocked ? "Locked" : "Play Now"}</small>
-    `;
-
-    if (number <= unlocked) {
-      button.onclick = () => startLevel(i);
-    }
-
-    container.appendChild(button);
-  });
-}
-
-function startLevel(index) {
-  currentLevel = index;
-  questionIndex = 0;
-  mistakes = 0;
-  completed = false;
-
-  document.getElementById("game").style.display = "block";
-  document.getElementById("next").style.display = "none";
-  document.getElementById("message").textContent = "";
-
-  showQuestion();
-
-  document.getElementById("game").scrollIntoView({
-    behavior: "smooth"
-  });
-}
-
-function showQuestion() {
-  const level = challenges[currentLevel];
-  const question = level.questions[questionIndex];
-
-  document.getElementById("levelTitle").textContent = level.title;
-  document.getElementById("levelDesc").textContent = level.desc;
-  document.getElementById("question").textContent =
-    `Pertanyaan ${questionIndex + 1}/${level.questions.length}: ${question.q}`;
-
-  document.getElementById("bar").style.width =
-    ((questionIndex + 1) / level.questions.length * 100) + "%";
-
-  document.getElementById("answer").value = "";
-  document.getElementById("answer").disabled = false;
-  document.getElementById("answer").focus();
-}
-
-function checkAnswer() {
-  if (completed) return;
-
-  const answer = document.getElementById("answer").value
-    .trim().toLowerCase();
-
-  if (!answer) {
-    document.getElementById("message").textContent =
-      "Masukkan jawaban terlebih dahulu!";
-    return;
-  }
-
-  const correct = challenges[currentLevel]
-    .questions[questionIndex].a;
-
-  if (correct.includes(answer)) {
-    questionIndex++;
-    document.getElementById("message").textContent =
-      "✓ Jawaban benar!";
-
-    if (questionIndex >= challenges[currentLevel].questions.length) {
-      completeLevel();
-    } else {
-      setTimeout(showQuestion, 700);
-    }
-
-  } else {
-    mistakes++;
-
-    document.getElementById("message").textContent =
-      "✗ Jawaban salah! Coba lagi. Kesalahan: " + mistakes;
-  }
-}
-
-function completeLevel() {
-  completed = true;
-
-  document.getElementById("question").textContent =
-    "🎉 LEVEL BERHASIL DISELESAIKAN!";
-
-  document.getElementById("answer").disabled = true;
-
-  document.getElementById("message").textContent =
-    "Keren! Kamu berhasil melewati semua pertanyaan.";
-
-  if (currentLevel + 1 < challenges.length) {
-    unlocked = Math.max(unlocked, currentLevel + 2);
-    localStorage.setItem("nexusUnlocked", unlocked);
-    document.getElementById("next").style.display = "block";
-    document.getElementById("next").textContent =
-      "UNLOCK LEVEL " + (currentLevel + 2) + " →";
-  } else {
-    document.getElementById("message").textContent =
-      "🏆 SELAMAT! KAMU TELAH MENYELESAIKAN SEMUA LEVEL!";
-  }
-
-  renderLevels();
-}
-
-function nextLevel() {
-  startLevel(currentLevel + 1);
-}
-
-document.getElementById("answer").addEventListener("keydown", e => {
-  if (e.key === "Enter") checkAnswer();
-});
-
-renderLevels();
-</script>
-
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
 </body>
 </html>
